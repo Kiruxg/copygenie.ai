@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | AI Product Description Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="auth-form">
+        <h1>Create Account</h1>
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              minlength="8"
+            />
+            <div class="password-requirements" style="display: none">
+              <p>Password must contain:</p>
+              <ul>
+                <li data-requirement="length">At least 8 characters</li>
+                <li data-requirement="uppercase">One uppercase letter</li>
+                <li data-requirement="lowercase">One lowercase letter</li>
+                <li data-requirement="number">One number</li>
+                <li data-requirement="special">One special character</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" required />
+          </div>
+
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="termsAccepted" required />
+              I agree to the
+              <a href="/terms.html" target="_blank">Terms of Service</a>
+            </label>
+          </div>
+
+          <button type="submit">Create Account</button>
+
+          <p class="auth-links">
+            Already have an account? <a href="login.html">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+    <script src="services/auth-service.js"></script>
+    <script>
+      const authService = new AuthService();
+      const registerForm = document.getElementById("registerForm");
+      const password = document.getElementById("password");
+      const confirmPassword = document.getElementById("confirmPassword");
+
+      // Password validation indicators
+      function updatePasswordRequirements(password) {
+        document.getElementById("length").style.color =
+          password.length >= 8 ? "green" : "red";
+        document.getElementById("uppercase").style.color = /[A-Z]/.test(
+          password
+        )
+          ? "green"
+          : "red";
+        document.getElementById("lowercase").style.color = /[a-z]/.test(
+          password
+        )
+          ? "green"
+          : "red";
+        document.getElementById("number").style.color = /\d/.test(password)
+          ? "green"
+          : "red";
+      }
+
+      password.addEventListener("input", (e) => {
+        updatePasswordRequirements(e.target.value);
+      });
+
+      // Form submission
+      registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const passwordValue = password.value;
+        const confirmPasswordValue = confirmPassword.value;
+        const termsAccepted = document.getElementById("termsAccepted").checked;
+
+        // Validation
+        if (passwordValue !== confirmPasswordValue) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        if (!termsAccepted) {
+          alert("Please accept the Terms of Service");
+          return;
+        }
+
+        try {
+          const loadingButton = e.target.querySelector("button");
+          loadingButton.disabled = true;
+          loadingButton.innerHTML =
+            '<span class="spinner"></span> Creating Account...';
+
+          await authService.register(email, passwordValue);
+          window.location.href = "/";
+        } catch (error) {
+          alert(error.message);
+          loadingButton.disabled = false;
+          loadingButton.textContent = "Create Account";
+        }
+      });
+    </script>
+    <script src="scripts/include-nav.js"></script>
+    <script src="scripts/password-validation.js"></script>
+  </body>
+</html>

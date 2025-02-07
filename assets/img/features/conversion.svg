@@ -1,0 +1,54 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Simple Arrow Up -->
+    <path d="M100 160L100 60" 
+        stroke="#3498db" 
+        stroke-width="8" 
+        stroke-linecap="round">
+        <animate
+            attributeName="stroke-dasharray"
+            values="0,100;100,0"
+            dur="1s"
+            fill="freeze"
+        />
+    </path>
+    
+    <!-- Arrow Head -->
+    <path d="M70 90L100 60L130 90" 
+        stroke="#3498db" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        stroke-linejoin="round">
+        <animate
+            attributeName="opacity"
+            values="0;1"
+            dur="0.5s"
+            begin="0.8s"
+            fill="freeze"
+        />
+    </path>
+
+    <!-- Dollar Sign -->
+    <text x="100" y="140" 
+        font-family="Arial" 
+        font-size="48" 
+        fill="#2ecc71" 
+        text-anchor="middle" 
+        font-weight="bold">$</text>
+
+    <!-- Percentage -->
+    <text x="100" y="45" 
+        font-family="Arial" 
+        font-size="24" 
+        fill="#2c3e50" 
+        text-anchor="middle" 
+        font-weight="bold">
+        +240%
+        <animate
+            attributeName="opacity"
+            values="0;1"
+            dur="0.5s"
+            begin="1s"
+            fill="freeze"
+        />
+    </text>
+</svg> 

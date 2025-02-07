@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Product Description Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>AI Product Description Generator</h1>
+        <div class="plan-badge" id="currentPlan">Free Plan</div>
+      </header>
+
+      <main>
+        <form id="productForm">
+          <div class="form-group">
+            <label for="productName">Product Name*</label>
+            <input type="text" id="productName" required />
+          </div>
+
+          <div class="form-group">
+            <label for="keyFeatures">Key Features/Bullet Points*</label>
+            <textarea
+              id="keyFeatures"
+              rows="4"
+              required
+              placeholder="Enter each feature on a new line"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="tone">Desired Tone*</label>
+            <select id="tone" required>
+              <option value="professional">Professional</option>
+              <option value="casual">Casual</option>
+              <option value="fun" class="pro-feature">Fun (Pro)</option>
+              <option value="technical" class="pro-feature">
+                Technical (Pro)
+              </option>
+            </select>
+          </div>
+
+          <button type="submit">Generate Description</button>
+        </form>
+
+        <div class="output-container">
+          <div class="output-section">
+            <h3>Product Description</h3>
+            <div id="descriptionOutput" class="output-box"></div>
+          </div>
+
+          <div class="output-section">
+            <h3>SEO Keywords</h3>
+            <div id="keywordsOutput" class="output-box"></div>
+          </div>
+
+          <div class="pro-features">
+            <h3>Pro Features</h3>
+            <div id="abTestOutput" class="output-box locked">
+              <p>🔒 Upgrade to Pro for A/B Test Variants</p>
+            </div>
+            <div id="multilingualOutput" class="output-box locked">
+              <p>🔒 Upgrade to Pro for Multilingual Descriptions</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="scripts/include-nav.js"></script>
+  </body>
+</html>

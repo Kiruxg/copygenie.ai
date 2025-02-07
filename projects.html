@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Management - CopyGenie</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="dashboard-layout">
+    <!-- Same navigation as dashboard.html -->
+
+    <main class="dashboard-main">
+      <header class="page-header">
+        <div class="header-left">
+          <h1>Projects</h1>
+          <div class="view-controls">
+            <button class="view-btn active" data-view="grid">Grid</button>
+            <button class="view-btn" data-view="list">List</button>
+          </div>
+        </div>
+        <div class="header-right">
+          <button class="import-btn">Import Products</button>
+          <button class="new-project-btn">New Project</button>
+        </div>
+      </header>
+
+      <!-- Project Filters -->
+      <div class="project-filters">
+        <div class="search-bar">
+          <input type="text" placeholder="Search projects..." />
+        </div>
+        <div class="filter-group">
+          <select id="categoryFilter">
+            <option value="">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="home">Home & Garden</option>
+          </select>
+          <select id="sortBy">
+            <option value="recent">Recently Updated</option>
+            <option value="name">Name</option>
+            <option value="count">Description Count</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Projects Grid -->
+      <div class="projects-grid">
+        <!-- Project cards will be dynamically populated -->
+      </div>
+
+      <!-- Bulk Operations Modal -->
+      <div class="modal" id="bulkModal">
+        <div class="modal-content">
+          <h2>Bulk Generate Descriptions</h2>
+          <div class="bulk-upload">
+            <input type="file" id="csvUpload" accept=".csv" />
+            <p>
+              Download template:
+              <a href="/templates/bulk-template.csv">CSV Template</a>
+            </p>
+          </div>
+          <div class="bulk-settings">
+            <h3>Generation Settings</h3>
+            <div class="form-group">
+              <label>Tone</label>
+              <select id="bulkTone">
+                <option value="professional">Professional</option>
+                <option value="casual">Casual</option>
+                <option value="enthusiastic">Enthusiastic</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Length</label>
+              <select id="bulkLength">
+                <option value="short">Short</option>
+                <option value="medium">Medium</option>
+                <option value="long">Long</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button class="cancel-btn">Cancel</button>
+            <button class="start-bulk-btn">Start Generation</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project Template Modal -->
+      <div class="modal" id="templateModal">
+        <div class="modal-content">
+          <h2>Save as Template</h2>
+          <div class="form-group">
+            <label>Template Name</label>
+            <input type="text" id="templateName" />
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="templateCategory">
+              <option value="electronics">Electronics</option>
+              <option value="fashion">Fashion</option>
+              <option value="home">Home & Garden</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="templateDescription"></textarea>
+          </div>
+          <div class="modal-actions">
+            <button class="cancel-btn">Cancel</button>
+            <button class="save-template-btn">Save Template</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="scripts/projects.js"></script>
+  </body>
+</html>

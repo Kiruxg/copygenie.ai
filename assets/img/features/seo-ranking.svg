@@ -1,0 +1,84 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Grid -->
+    <path d="M0 0h200v200h-200z" fill="#f8f9fa"/>
+    <path d="M20 0v200" stroke="#e9ecef" stroke-width="1"/>
+    <path d="M60 0v200" stroke="#e9ecef" stroke-width="1"/>
+    <path d="M100 0v200" stroke="#e9ecef" stroke-width="1"/>
+    <path d="M140 0v200" stroke="#e9ecef" stroke-width="1"/>
+    <path d="M180 0v200" stroke="#e9ecef" stroke-width="1"/>
+    
+    <!-- Chart Bars -->
+    <rect x="40" y="140" width="30" height="40" fill="#3498db" opacity="0.7">
+        <animate
+            attributeName="height"
+            values="0;40"
+            dur="1s"
+            begin="0.2s"
+            fill="freeze"
+        />
+        <animate
+            attributeName="y"
+            values="180;140"
+            dur="1s"
+            begin="0.2s"
+            fill="freeze"
+        />
+    </rect>
+    
+    <rect x="85" y="100" width="30" height="80" fill="#3498db" opacity="0.8">
+        <animate
+            attributeName="height"
+            values="0;80"
+            dur="1s"
+            begin="0.4s"
+            fill="freeze"
+        />
+        <animate
+            attributeName="y"
+            values="180;100"
+            dur="1s"
+            begin="0.4s"
+            fill="freeze"
+        />
+    </rect>
+    
+    <rect x="130" y="60" width="30" height="120" fill="#3498db">
+        <animate
+            attributeName="height"
+            values="0;120"
+            dur="1s"
+            begin="0.6s"
+            fill="freeze"
+        />
+        <animate
+            attributeName="y"
+            values="180;60"
+            dur="1s"
+            begin="0.6s"
+            fill="freeze"
+        />
+    </rect>
+
+    <!-- Trend Line -->
+    <path d="M40 160L85 140L130 120" stroke="#2ecc71" stroke-width="3" stroke-linecap="round" stroke-dasharray="200">
+        <animate
+            attributeName="stroke-dashoffset"
+            from="200"
+            to="0"
+            dur="1.5s"
+            begin="0.8s"
+            fill="freeze"
+        />
+    </path>
+
+    <!-- Ranking Stars -->
+    <path d="M160 40l8-16l8 16l16 8l-16 8l-8 16l-8-16l-16-8z" fill="#f1c40f">
+        <animate
+            attributeName="opacity"
+            values="0;1"
+            dur="0.5s"
+            begin="1s"
+            fill="freeze"
+        />
+    </path>
+</svg> 

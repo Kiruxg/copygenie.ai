@@ -1,0 +1,108 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Grid -->
+    <path d="M20 20h160v160h-160z" stroke="#e9ecef" stroke-width="1" fill="#f8f9fa"/>
+    
+    <!-- Axes -->
+    <path d="M40 160h140" stroke="#2c3e50" stroke-width="2"/>
+    <path d="M40 20v140" stroke="#2c3e50" stroke-width="2"/>
+
+    <!-- Conversion Curve -->
+    <path d="
+        M40 140
+        Q70 130, 90 100
+        T140 40
+    " 
+    stroke="#3498db" 
+    stroke-width="3"
+    fill="none"
+    stroke-dasharray="200"
+    >
+        <animate
+            attributeName="stroke-dashoffset"
+            from="200"
+            to="0"
+            dur="2s"
+            fill="freeze"
+        />
+    </path>
+
+    <!-- Area under curve -->
+    <path d="
+        M40 140
+        Q70 130, 90 100
+        T140 40
+        L140 160
+        L40 160
+        Z
+    " 
+    fill="url(#gradient)"
+    opacity="0.2"
+    >
+        <animate
+            attributeName="opacity"
+            from="0"
+            to="0.2"
+            dur="2s"
+            fill="freeze"
+        />
+    </path>
+
+    <!-- Gradient definition -->
+    <defs>
+        <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3498db"/>
+            <stop offset="100%" stop-color="#f8f9fa"/>
+        </linearGradient>
+    </defs>
+
+    <!-- Data Points -->
+    <circle cx="40" cy="140" r="4" fill="#3498db">
+        <animate attributeName="r" values="0;4" dur="0.5s" fill="freeze"/>
+    </circle>
+    <circle cx="90" cy="100" r="4" fill="#3498db">
+        <animate attributeName="r" values="0;4" dur="0.5s" begin="0.5s" fill="freeze"/>
+    </circle>
+    <circle cx="140" cy="40" r="4" fill="#3498db">
+        <animate attributeName="r" values="0;4" dur="0.5s" begin="1s" fill="freeze"/>
+    </circle>
+
+    <!-- Percentage Labels -->
+    <g font-family="Arial" font-size="12" fill="#2c3e50">
+        <text x="25" y="145">0%</text>
+        <text x="20" y="85">50%</text>
+        <text x="15" y="25">100%</text>
+    </g>
+
+    <!-- Arrow Indicators -->
+    <path d="M140 35l5-5l-5-5" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <animate
+            attributeName="opacity"
+            values="0;1"
+            dur="0.5s"
+            begin="1.5s"
+            fill="freeze"
+        />
+    </path>
+
+    <!-- Success Icons -->
+    <g transform="translate(160, 30)">
+        <circle cx="0" cy="0" r="10" fill="#2ecc71">
+            <animate
+                attributeName="r"
+                values="0;10"
+                dur="0.5s"
+                begin="1.7s"
+                fill="freeze"
+            />
+        </circle>
+        <path d="M-4 0l3 3l5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <animate
+                attributeName="opacity"
+                values="0;1"
+                dur="0.3s"
+                begin="2s"
+                fill="freeze"
+            />
+        </path>
+    </g>
+</svg> 

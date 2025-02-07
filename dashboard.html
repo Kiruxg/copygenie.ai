@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - CopyGenie</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="dashboard-layout">
+      <!-- Sidebar Navigation -->
+      <nav class="dashboard-nav">
+        <div class="nav-header">
+          <img src="assets/img/logo.svg" alt="CopyGenie Logo" />
+        </div>
+        <ul class="nav-links">
+          <li class="active"><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="generate.html">Generate</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="analytics.html">Analytics</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="dashboard-main">
+        <header class="dashboard-header">
+          <h1>Welcome back, <span class="user-name">User</span></h1>
+          <div class="user-menu">
+            <span class="credits">Credits: 100</span>
+            <button class="profile-button">Profile</button>
+          </div>
+        </header>
+
+        <!-- Quick Stats -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h3>Descriptions Generated</h3>
+            <p class="stat-number">24</p>
+          </div>
+          <div class="stat-card">
+            <h3>Active Projects</h3>
+            <p class="stat-number">3</p>
+          </div>
+          <div class="stat-card">
+            <h3>Credits Left</h3>
+            <p class="stat-number">76</p>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <section class="recent-activity">
+          <h2>Recent Activity</h2>
+          <div class="activity-list">
+            <!-- Activity items will be dynamically populated -->
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

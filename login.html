@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | AI Product Description Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="auth-form">
+        <h1>Login</h1>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </div>
+
+          <button type="submit">Login</button>
+
+          <p class="auth-links">
+            Don't have an account? <a href="register.html">Register</a>
+          </p>
+        </form>
+      </div>
+    </div>
+    <script src="services/auth-service.js"></script>
+    <script>
+      const authService = new AuthService();
+      const loginForm = document.getElementById("loginForm");
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        try {
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          await authService.login(email, password);
+          window.location.href = "/";
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+    </script>
+    <script src="scripts/include-nav.js"></script>
+  </body>
+</html>

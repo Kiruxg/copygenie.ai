@@ -1,0 +1,36 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- AI Brain Background -->
+    <rect width="300" height="200" fill="#f8f9fa"/>
+    
+    <!-- Brain Circuit -->
+    <circle cx="150" cy="100" r="70" fill="white" stroke="#3498db" stroke-width="2"/>
+    
+    <!-- Circuit Paths -->
+    <g stroke="#3498db" stroke-width="2" fill="none">
+        <path d="M100 70q25-25 50 0">
+            <animate attributeName="stroke-dasharray" from="0,100" to="100,0" dur="2s" fill="freeze"/>
+        </path>
+        <path d="M100 100q25-25 50 0">
+            <animate attributeName="stroke-dasharray" from="0,100" to="100,0" dur="2s" begin="0.5s" fill="freeze"/>
+        </path>
+        <path d="M100 130q25-25 50 0">
+            <animate attributeName="stroke-dasharray" from="0,100" to="100,0" dur="2s" begin="1s" fill="freeze"/>
+        </path>
+    </g>
+    
+    <!-- Connection Nodes -->
+    <g fill="#3498db">
+        <circle cx="100" cy="70" r="4"/>
+        <circle cx="150" cy="70" r="4"/>
+        <circle cx="100" cy="100" r="4"/>
+        <circle cx="150" cy="100" r="4"/>
+        <circle cx="100" cy="130" r="4"/>
+        <circle cx="150" cy="130" r="4"/>
+    </g>
+    
+    <!-- Pulse Effect -->
+    <circle cx="150" cy="100" r="50" stroke="#2ecc71" stroke-width="2" fill="none">
+        <animate attributeName="r" values="50;55;50" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+    </circle>
+</svg> 
