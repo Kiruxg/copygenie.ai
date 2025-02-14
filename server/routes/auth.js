@@ -9,9 +9,12 @@ const {
   validateLogin,
 } = require("../middleware/validation");
 const { rateLimiter } = require("../middleware/rate-limiter");
+const crypto = require("crypto");
+const { sendVerificationEmail } = require("../utils/email");
+const { authenticateToken } = require("../middleware/auth");
 
 // Add to the beginning of your routes that require authentication
-router.use(require("../middleware/auth").authenticateToken);
+router.use(authenticateToken);
 
 // Validation rules
 const authRules = {
@@ -68,11 +71,10 @@ router.post(
 );
 
 // Login user
-router.post("/login", rateLimiter, validateLogin, async (req, res, next) => {
+router.post("/login", rateLimiter, validateLogin, async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -100,7 +102,8 @@ router.post("/login", rateLimiter, validateLogin, async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(error);
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Login failed" });
   }
 });
 
@@ -129,6 +132,90 @@ router.post("/forgot-password", rateLimiter, async (req, res, next) => {
     // Password reset logic here
   } catch (error) {
     next(error);
+  }
+});
+
+// Quick signup endpoint
+router.post("/quick-signup", validateRegistration, async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // Check if user exists
+    let user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({
+        error: "Email already registered",
+        isVerified: user.isVerified,
+      });
+    }
+
+    // Create verification token
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    // Create new user
+    user = new User({
+      email,
+      verificationToken,
+      generationsRemaining: 5,
+      plan: "free",
+      isVerified: false,
+    });
+
+    await user.save();
+
+    res.json({
+      success: true,
+      redirectUrl: "/generator",
+    });
+  } catch (error) {
+    console.error("Signup error:", error);
+    res.status(500).json({ error: "Signup failed" });
+  }
+});
+
+// Resend verification endpoint
+router.post("/resend-verification", async (req, res) => {
+  try {
+    const user = await User.findById(req.session.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ error: "Email already verified" });
+    }
+
+    // Generate new verification token
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    user.verificationToken = verificationToken;
+    await user.save();
+
+    // Send new verification email
+    await sendVerificationEmail(user.email, verificationToken);
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error("Resend verification error:", error);
+    res.status(500).json({ error: "Failed to resend verification email" });
+  }
+});
+
+// Email verification endpoint
+router.get("/verify/:token", async (req, res) => {
+  try {
+    const user = await User.findOne({ verificationToken: req.params.token });
+    if (!user) {
+      return res.redirect("/verification-failed");
+    }
+
+    user.isVerified = true;
+    user.verificationToken = undefined;
+    await user.save();
+
+    res.redirect("/generator");
+  } catch (error) {
+    console.error("Verification error:", error);
+    res.redirect("/verification-failed");
   }
 });
 

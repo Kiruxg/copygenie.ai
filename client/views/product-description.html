@@ -4,12 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CopyGenie - AI Product Description Generator</title>
-    <link href="client/styles/product-description.css" rel="stylesheet" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-    />
+    <link href="./styles/product-description.css" rel="stylesheet" />
   </head>
   <body>
     <div class="container">
@@ -19,11 +14,8 @@
       </header>
 
       <main class="dashboard-layout">
-        <!-- Add at the top of the main content -->
-        <div id="trialBanner" class="hidden"></div>
-
-        <!-- Generator Card -->
         <div class="generator-card">
+          <h2>Generate Description</h2>
           <form id="productForm" class="product-form">
             <div class="form-group">
               <label for="productName">Product Name *</label>
@@ -37,36 +29,12 @@
             </div>
 
             <div class="form-group">
-              <label for="personality" class="form-label"
-                >Choose Your Copywriting Legend</label
-              >
-              <select
-                id="personality"
-                name="personality"
-                class="form-select"
-                required
-              >
-                <option value="" disabled selected>
-                  Select who writes your copy...
-                </option>
-                <option value="STEVE_JOBS">
-                  Steve Jobs - Revolutionary Tech Visionary
-                </option>
-                <option value="GARY_HALBERT">
-                  Gary Halbert - The Prince of Print
-                </option>
-                <option value="OGILVY">
-                  David Ogilvy - The Father of Advertising
-                </option>
-                <option value="KONDO">Marie Kondo - Sparks Joy</option>
-                <option value="RAMSAY">
-                  Gordon Ramsay - Bold & Passionate
-                </option>
+              <label for="tone">Tone</label>
+              <select id="tone" name="tone">
+                <option value="professional">Professional</option>
+                <option value="casual">Casual</option>
+                <option value="enthusiastic">Enthusiastic</option>
               </select>
-              <small class="form-text text-muted"
-                >Each legend brings their unique writing style to your product
-                description</small
-              >
             </div>
 
             <div class="form-group optional">
@@ -89,16 +57,15 @@
           </form>
         </div>
 
-        <!-- Preview Dashboard -->
         <div id="previewDashboard" class="preview-dashboard hidden">
           <h2>Content Preview</h2>
-
+          
           <div class="preview-section">
             <div class="section-header">
               <h3>SEO Title</h3>
               <span id="seoTitleLength" class="character-count">0/60</span>
             </div>
-            <div id="seoTitle" class="preview-content seo-title"></div>
+            <div id="previewSeoTitle" class="preview-content seo-title"></div>
           </div>
 
           <div class="preview-section">
@@ -106,40 +73,24 @@
               <h3>Meta Description</h3>
               <span id="metaDescLength" class="character-count">0/155</span>
             </div>
-            <div
-              id="metaDescription"
-              class="preview-content meta-description"
-            ></div>
-          </div>
-
-          <div class="preview-section">
-            <h3>Key Features</h3>
-            <ul
-              id="generatedFeatures"
-              class="preview-content features-list"
-            ></ul>
+            <div id="previewMetaDescription" class="preview-content meta-description"></div>
           </div>
 
           <div class="preview-section">
             <h3>Product Description</h3>
-            <div
-              id="productDescription"
-              class="preview-content product-description"
-            ></div>
+            <div id="previewDescription" class="preview-content product-description"></div>
           </div>
 
           <div class="preview-section">
             <h3>Winning Keywords</h3>
-            <ul id="keywords" class="keywords-list"></ul>
+            <ul id="previewKeywords" class="keywords-list"></ul>
           </div>
 
           <div class="preview-actions">
             <button id="copyAll" class="action-button">
               <svg class="icon" viewBox="0 0 20 20" fill="currentColor">
-                <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z" />
-                <path
-                  d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z"
-                />
+                <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z"/>
+                <path d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z"/>
               </svg>
               Copy All Content
             </button>
@@ -147,13 +98,11 @@
         </div>
       </main>
 
-      <div id="toast-container"></div>
+      <div id="toast" class="toast hidden">
+        <span class="toast-message"></span>
+      </div>
     </div>
 
-    <script src="client/js/product-description.js"></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/toastify-js"
-    ></script>
+    <script src="./js/product-description.js"></script>
   </body>
 </html>

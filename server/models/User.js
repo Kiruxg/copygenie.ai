@@ -10,6 +10,11 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    verificationToken: String,
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
     password: {
       type: String,
       required: true,
@@ -17,8 +22,21 @@ const userSchema = new mongoose.Schema(
     },
     plan: {
       type: String,
-      enum: ["free", "pro", "business"],
+      enum: ["free", "pro", "enterprise"],
       default: "free",
+    },
+    generationsRemaining: {
+      type: Number,
+      default: 5,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+    lastLoginAt: Date,
+    onboardingCompleted: {
+      type: Boolean,
+      default: false,
     },
     usageCount: {
       type: Number,
@@ -28,6 +46,8 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    trialStartDate: Date,
+    hasActiveSubscription: Boolean,
   },
   { timestamps: true }
 );

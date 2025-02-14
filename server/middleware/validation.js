@@ -20,8 +20,26 @@ const seoKeywordsRules = [
   body("targetMarket").trim().notEmpty().escape(),
 ];
 
+// Registration validation rules
+const validateRegistration = [
+  body("email").isEmail().normalizeEmail(),
+  body("password")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters long"),
+  validateInput,
+];
+
+// Login validation rules
+const validateLogin = [
+  body("email").isEmail().normalizeEmail(),
+  body("password").notEmpty(),
+  validateInput,
+];
+
 module.exports = {
   validateInput,
   productDescriptionRules,
   seoKeywordsRules,
+  validateRegistration,
+  validateLogin,
 };

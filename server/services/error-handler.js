@@ -1,176 +1,66 @@
-const Sentry = require("@sentry/node");
-const { OpenAI } = require("openai");
-const { User } = require("../models");
-
 class ErrorHandler {
   constructor() {
-    // Initialize error tracking
-    Sentry.init({
-      dsn: process.env.SENTRY_DSN,
-      environment: process.env.NODE_ENV,
-      tracesSampleRate: 1.0,
-    });
-
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-
-    this.criticalErrors = new Set([
-      "OPENAI_API_ERROR",
-      "DATABASE_CONNECTION_ERROR",
-      "RATE_LIMIT_EXCEEDED",
-      "SUBSCRIPTION_PAYMENT_FAILED",
-    ]);
+    this.errorTypes = {
+      OPENAI_API_ERROR: "OpenAI API Error",
+      VALIDATION_ERROR: "Validation Error",
+      SERVER_ERROR: "Server Error",
+    };
   }
 
   async handleError(error, userId = null, context = {}) {
     const errorId = this.generateErrorId();
     const errorType = this.categorizeError(error);
 
-    // Log error with context
-    const errorLog = {
+    // Log error details
+    console.error("Error occurred:", {
       id: errorId,
       type: errorType,
       message: error.message,
-      stack: error.stack,
       userId,
       context,
-      timestamp: new Date(),
-      environment: process.env.NODE_ENV,
-    };
-
-    // Track in Sentry
-    Sentry.captureException(error, {
-      user: userId ? { id: userId } : undefined,
-      extra: context,
+      stack: error.stack,
     });
 
-    // Handle based on error type
-    await this.handleByType(errorType, errorLog);
+    // Return user-friendly error response
+    return {
+      code: this.getHttpStatusCode(errorType),
+      message: this.getUserMessage(errorType),
+      errorId,
+    };
+  }
 
-    // Return user-friendly response
-    return this.getUserResponse(errorType, errorId);
+  generateErrorId() {
+    return `err_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   categorizeError(error) {
-    if (error.name === "OpenAIError") return "OPENAI_API_ERROR";
-    if (error.name === "MongooseError") return "DATABASE_ERROR";
-    if (error.code === 429) return "RATE_LIMIT_EXCEEDED";
-    if (error.name === "ValidationError") return "VALIDATION_ERROR";
-    if (error.name === "AuthenticationError") return "AUTH_ERROR";
-    return "UNKNOWN_ERROR";
+    if (error.message.includes("OpenAI"))
+      return this.errorTypes.OPENAI_API_ERROR;
+    if (error.message.includes("validation"))
+      return this.errorTypes.VALIDATION_ERROR;
+    return this.errorTypes.SERVER_ERROR;
   }
 
-  async handleByType(errorType, errorLog) {
-    // Handle critical errors
-    if (this.criticalErrors.has(errorType)) {
-      await this.handleCriticalError(errorType, errorLog);
-      return;
-    }
-
-    // Store error in database
-    await this.storeError(errorLog);
-
-    // Trigger automated recovery if possible
-    await this.attemptRecovery(errorType, errorLog);
-  }
-
-  async handleCriticalError(errorType, errorLog) {
-    // Alert DevOps
-    await this.alertDevOps(errorType, errorLog);
-
-    // Attempt failover for critical services
-    await this.triggerFailover(errorType);
-
-    // Log critical error
-    await this.storeCriticalError(errorLog);
-  }
-
-  async attemptRecovery(errorType, errorLog) {
+  getHttpStatusCode(errorType) {
     switch (errorType) {
-      case "OPENAI_API_ERROR":
-        return await this.handleAIFailover(errorLog);
-      case "RATE_LIMIT_EXCEEDED":
-        return await this.handleRateLimitRecovery(errorLog);
-      case "DATABASE_ERROR":
-        return await this.handleDatabaseRecovery(errorLog);
+      case this.errorTypes.VALIDATION_ERROR:
+        return 400;
+      case this.errorTypes.OPENAI_API_ERROR:
+        return 503;
       default:
-        return false;
+        return 500;
     }
   }
 
-  async handleAIFailover(errorLog) {
-    try {
-      // Attempt to use backup AI service or different model
-      const backupResponse = await this.useBackupAIService(errorLog.context);
-
-      if (backupResponse) {
-        await this.updateErrorResolution(errorLog.id, "Failover successful");
-        return true;
-      }
-    } catch (error) {
-      await this.updateErrorResolution(errorLog.id, "Failover failed");
-      return false;
+  getUserMessage(errorType) {
+    switch (errorType) {
+      case this.errorTypes.OPENAI_API_ERROR:
+        return "Unable to generate description. Please try again later.";
+      case this.errorTypes.VALIDATION_ERROR:
+        return "Please check your input and try again.";
+      default:
+        return "An unexpected error occurred. Please try again.";
     }
-  }
-
-  getUserResponse(errorType, errorId) {
-    const responses = {
-      OPENAI_API_ERROR: {
-        message:
-          "We're experiencing temporary issues with our AI service. Please try again in a moment.",
-        code: 503,
-      },
-      RATE_LIMIT_EXCEEDED: {
-        message:
-          "You've reached your usage limit. Please upgrade your plan or try again later.",
-        code: 429,
-      },
-      VALIDATION_ERROR: {
-        message: "Please check your input and try again.",
-        code: 400,
-      },
-      AUTH_ERROR: {
-        message: "Authentication failed. Please log in again.",
-        code: 401,
-      },
-      DATABASE_ERROR: {
-        message:
-          "We're experiencing technical difficulties. Please try again later.",
-        code: 500,
-      },
-      UNKNOWN_ERROR: {
-        message: "An unexpected error occurred. Our team has been notified.",
-        code: 500,
-      },
-    };
-
-    return {
-      ...responses[errorType],
-      errorId,
-      supportReference: this.generateSupportReference(errorId),
-    };
-  }
-
-  async alertDevOps(errorType, errorLog) {
-    // Send alerts through multiple channels
-    await Promise.all([
-      this.sendSlackAlert(errorType, errorLog),
-      this.sendPagerDuty(errorType, errorLog),
-      this.sendEmailAlert(errorType, errorLog),
-    ]);
-  }
-
-  generateSupportReference(errorId) {
-    return `CG-${errorId.substring(0, 8).toUpperCase()}`;
-  }
-
-  async storeError(errorLog) {
-    // Store in database for analysis
-    await ErrorLog.create(errorLog);
-
-    // Update error statistics
-    await this.updateErrorStats(errorLog.type);
   }
 }
 
